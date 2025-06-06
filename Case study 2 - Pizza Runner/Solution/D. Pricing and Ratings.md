@@ -12,7 +12,9 @@ JOIN pizza_names p USING (pizza_id)
 RIGHT JOIN runner_orders_temp r USING(order_id)
 WHERE cancellation IS NULL;
 ```
-![Screen Shot 2025-06-06 at 17 43 03](https://github.com/user-attachments/assets/82dd791d-bc14-4adc-b5e7-7b3b15f2a5c6)
+| total_sales |
+|-------------|
+|138          |
 
 ---
 
@@ -30,7 +32,9 @@ SELECT
 FROM extras_split e
 JOIN pizza_toppings p ON e.extra_id = p.topping_id;
 ```
-![Screen Shot 2025-06-06 at 17 43 46](https://github.com/user-attachments/assets/e6ed7bf9-c38b-4720-bc9a-918ce8b3b098)
+| updated_money|
+|--------------|
+|145           |
 
 ---
 
@@ -51,7 +55,16 @@ VALUES
 
 SELECT * FROM ratings;
 ```
-![Screen Shot 2025-06-06 at 17 44 05](https://github.com/user-attachments/assets/df8034bf-e328-4789-9ed7-0fff05b49dc6)
+| order_id | rating |
+|----------|--------|
+| 1        | 4      |
+| 2        | 5      |
+| 3        | 5      |
+| 4        | 3      |
+| 5        | 4      |
+| 7        | 4      |
+| 8        | 3      |
+| 10       | 5      |
 
 ---
 
@@ -86,7 +99,16 @@ GROUP BY
   c.customer_id, r.order_id, o.runner_id, r.rating,
   c.order_time, o.pickup_time, o.duration;
 ```
-![Screen Shot 2025-06-06 at 17 44 39](https://github.com/user-attachments/assets/d8ad2742-479c-4b12-8e73-04c396b27424)
+| customer_id | order_id | runner_id | rating | order_time           | pickup_time          | order_to_pickup_time | duration | avg_speed | pizza_count |
+|-------------|----------|-----------|--------|----------------------|----------------------|----------------------|----------|-----------|--------------|
+| 101         | 1        | 1         | 4      | 2020-01-01 18:05:02  | 2020-01-01 18:15:34  | 10                   | 32       | 37.5      | 1            |
+| 101         | 2        | 1         | 5      | 2020-01-01 19:00:52  | 2020-01-01 19:10:54  | 10                   | 27       | 44.44     | 1            |
+| 102         | 3        | 1         | 5      | 2020-01-02 23:51:23  | 2020-01-03 00:12:37  | 21                   | 20       | 40.2      | 2            |
+| 103         | 4        | 2         | 3      | 2020-01-04 13:23:46  | 2020-01-04 13:53:03  | 29                   | 40       | 35.1      | 3            |
+| 104         | 5        | 3         | 4      | 2020-01-08 21:00:29  | 2020-01-08 21:10:57  | 10                   | 15       | 40        | 1            |
+| 105         | 7        | 2         | 4      | 2020-01-08 21:20:29  | 2020-01-08 21:30:45  | 10                   | 25       | 60        | 1            |
+| 102         | 8        | 2         | 3      | 2020-01-09 23:54:33  | 2020-01-10 00:15:02  | 20                   | 15       | 93.6      | 1            |
+| 104         | 10       | 1         | 5      | 2020-01-11 18:34:49  | 2020-01-11 18:50:20  | 15                   | 10       | 60        | 2            |
 
 ---
 
@@ -99,4 +121,7 @@ SELECT
   ROUND(@basecost - SUM(distance) * 0.3, 2) AS money_left
 FROM runner_orders_temp;
 ```
-![Screen Shot 2025-06-06 at 17 46 01](https://github.com/user-attachments/assets/7b03624d-41b2-4210-b982-0a6da11e16d9)
+| revenue | runner_paid | money_left |
+|---------|-------------|-------------|
+| 138     | 43.56       | 94.44       |
+
