@@ -13,7 +13,11 @@ SELECT
 FROM runners
 GROUP BY signup_week;
 ```
-![Screen Shot 2025-06-06 at 14 49 25](https://github.com/user-attachments/assets/218e3ac7-5d06-4ad2-b764-d42baa99f44b)
+| signup_week | runner_count |
+|-------------|---------------|
+| 1           | 2             |
+| 2           | 1             |
+| 3           | 1             |
 
 ---
 
@@ -26,7 +30,11 @@ JOIN customer_orders_temp USING (order_id)
 WHERE cancellation IS NULL
 GROUP BY runner_id;
 ```
-![Screen Shot 2025-06-06 at 14 50 59](https://github.com/user-attachments/assets/5423aaeb-5f77-4c6e-bd86-449a429cb927)
+| runner_id | avg_pickup |
+|-----------|------------|
+| 1         | 15         |
+| 2         | 23         |
+| 3         | 10         |
 
 ---
 
@@ -47,7 +55,16 @@ ORDER BY number_of_pizza;
 - 3 pizzas: ~29 minutes
 - Prep time increases with pizza quantity.
 
-![Screen Shot 2025-06-06 at 14 51 36](https://github.com/user-attachments/assets/0fb9dc9c-ed69-4f46-82a0-cc020003b7c9)
+| order_id | number_of_pizzas | time_prepare |
+|----------|------------------|--------------|
+| 1        | 1                | 10           |
+| 2        | 1                | 10           |
+| 5        | 1                | 10           |
+| 7        | 1                | 10           |
+| 8        | 1                | 20           |
+| 3        | 2                | 21           |
+| 10       | 2                | 15           |
+| 4        | 3                | 29           |
 
 ---
 
@@ -60,7 +77,13 @@ JOIN customer_orders_temp USING (order_id)
 WHERE distance IS NOT NULL
 GROUP BY customer_id;
 ```
-![Screen Shot 2025-06-06 at 14 52 03](https://github.com/user-attachments/assets/58325616-ffcf-4ebd-a9fb-a82049f1827f)
+| customer_id | avg_distance |
+|-------------|--------------|
+| 101         | 20           |
+| 102         | 16.73        |
+| 103         | 23.4         |
+| 104         | 10           |
+| 105         | 25           |
 
 ---
 
@@ -69,7 +92,9 @@ GROUP BY customer_id;
 SELECT (MAX(duration) - MIN(duration)) AS time_diff
 FROM runner_orders_temp;
 ```
-![Screen Shot 2025-06-06 at 14 52 25](https://github.com/user-attachments/assets/e5b78e33-22e9-4b35-90f9-af6ced150265)
+| time_diff |
+|-----------|
+| 30        |
 
 ---
 
@@ -84,7 +109,20 @@ FROM runner_orders_temp
 WHERE duration IS NOT NULL
 ORDER BY runner_id;
 ```
-![Screen Shot 2025-06-06 at 14 52 50](https://github.com/user-attachments/assets/e2784717-a6a2-4093-8a98-895e1b40f2b6)
+| runner_id | order_id | distance | avg_speed |
+|-----------|----------|----------|-----------|
+| 1         | 1        | 20       | 37.5      |
+| 1         | 2        | 20       | 44.44     |
+| 1         | 3        | 13.4     | 40.2      |
+| 1         | 10       | 10       | 60        |
+| 2         | 4        | 23.4     | 35.1      |
+| 2         | 7        | 25       | 60        |
+| 2         | 8        | 23.4     | 93.6      |
+| 3         | 5        | 10       | 40        |
+
+- Runner 1 delivered 4 orders; avg_speed ranges from 37.5 to 60.
+- Runner 2 had 3 orders; highest speed is 93.6 (order 8 — likely an outlier).
+- Runner 3 has 1 order (order 5) with a consistent speed of 40.
 
 ---
 
@@ -95,6 +133,10 @@ SELECT runner_id,
 FROM runner_orders_temp
 GROUP BY runner_id;
 ```
-![Screen Shot 2025-06-06 at 14 53 27](https://github.com/user-attachments/assets/065acb90-8f9a-4c8a-a1fe-17d2b7502f30)
+| runner_id | percentage_success |
+|-----------|--------------------|
+| 1         | 100                |
+| 2         | 75                 |
+| 3         | 50                 |
 
 ---
