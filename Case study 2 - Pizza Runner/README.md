@@ -97,8 +97,8 @@ If Danny wants to expand his range of pizzas - how would this impact the existin
 
 ## 🚀 My Solution
 
-- [📜 View complete SQL scripts](../Syntax)  
-- [📊 View results and insights](../Solution)
+- [📜 View complete SQL scripts](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%202%20-%20Pizza%20Runner/Syntax)
+- [📊 View results](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%202%20-%20Pizza%20Runner/Solution)
 
 ---
 
