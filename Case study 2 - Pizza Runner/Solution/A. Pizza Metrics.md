@@ -29,7 +29,22 @@ FROM customer_orders;
 
 SELECT * FROM customer_orders_temp;
 ```
-![Screen Shot 2025-06-05 at 17 29 29](https://github.com/user-attachments/assets/4d667f69-4085-43bf-9fb1-fd621b9b3609)
+| order_id | customer_id | pizza_id | order_time           | exclusions | extras |
+|----------|-------------|----------|----------------------|------------|--------|
+| 1        | 101         | 1        | 2020-01-01 18:05:02  | NULL       | NULL   |
+| 2        | 101         | 1        | 2020-01-01 19:00:52  | NULL       | NULL   |
+| 3        | 102         | 1        | 2020-01-02 23:51:23  | NULL       | NULL   |
+| 3        | 102         | 2        | 2020-01-02 23:51:23  | NULL       | NULL   |
+| 4        | 103         | 1        | 2020-01-04 13:23:46  | 4          | NULL   |
+| 4        | 103         | 1        | 2020-01-04 13:23:46  | 4          | NULL   |
+| 4        | 103         | 2        | 2020-01-04 13:23:46  | 4          | NULL   |
+| 5        | 104         | 1        | 2020-01-08 21:00:29  | NULL       | 1      |
+| 6        | 101         | 2        | 2020-01-08 21:03:13  | NULL       | NULL   |
+| 7        | 105         | 2        | 2020-01-08 21:20:29  | NULL       | 1      |
+| 8        | 102         | 1        | 2020-01-09 23:54:33  | NULL       | NULL   |
+| 9        | 103         | 1        | 2020-01-10 11:22:59  | 4          | 1, 5   |
+| 10       | 104         | 1        | 2020-01-11 18:34:49  | NULL       | NULL   |
+| 10       | 104         | 1        | 2020-01-11 18:34:49  | 2, 6       | 1, 4   |
 
 ---
 
@@ -73,7 +88,18 @@ FROM runner_orders;
 
 SELECT * FROM runner_orders_temp;
 ```
-![Screen Shot 2025-06-05 at 17 29 48](https://github.com/user-attachments/assets/a474795e-5ef1-4241-842c-2b2e86af5d71)
+| order_id | runner_id | pickup_time            | distance | duration | cancellation            |
+|----------|-----------|------------------------|----------|----------|-------------------------|
+| 1        | 1         | 2020-01-01 18:15:34    | 20       | 32       | NULL                    |
+| 2        | 1         | 2020-01-01 19:10:54    | 20       | 27       | NULL                    |
+| 3        | 1         | 2020-01-03 00:12:37    | 13.4     | 20       | NULL                    |
+| 4        | 2         | 2020-01-04 13:53:03    | 23.4     | 40       | NULL                    |
+| 5        | 3         | 2020-01-08 21:10:57    | 10       | 15       | NULL                    |
+| 6        | 3         | NULL                   | NULL     | NULL     | Restaurant Cancellation |
+| 7        | 2         | 2020-01-08 21:30:45    | 25       | 25       | NULL                    |
+| 8        | 2         | 2020-01-10 00:15:02    | 23.4     | 15       | NULL                    |
+| 9        | 2         | NULL                   | NULL     | NULL     | Customer Cancellation   |
+| 10       | 1         | 2020-01-11 18:50:20    | 10       | 10       | NULL                    |
 
 ---
 
@@ -84,14 +110,18 @@ SELECT * FROM runner_orders_temp;
 SELECT COUNT(order_id) AS pizza_count
 FROM customer_orders_temp;
 ```
-![Screen Shot 2025-06-05 at 17 30 51](https://github.com/user-attachments/assets/ee99c4d2-fec6-4be5-af39-324054797ee6)
+| pizza_count |
+|-------------|
+| 14          |
 
 ### 2. How many unique customer orders were made?
 ```sql
 SELECT COUNT(DISTINCT order_id) AS total_orders
 FROM customer_orders_temp;
 ```
-![Screen Shot 2025-06-05 at 17 31 07](https://github.com/user-attachments/assets/0b757b5e-ce39-4749-9283-f8a3e68e407d)
+| total_orders |
+|--------------|
+| 10           |
 
 ### 3. How many successful orders were delivered by each runner?
 ```sql
@@ -101,7 +131,12 @@ FROM runner_orders_temp
 WHERE cancellation IS NULL
 GROUP BY runner_id;
 ```
-![Screen Shot 2025-06-05 at 17 31 22](https://github.com/user-attachments/assets/2b199c5c-4649-447e-9376-abf0b9f0b59f)
+| runner_id | successful_orders |
+|-----------|-------------------|
+| 1         | 4                 |
+| 2         | 3                 |
+| 3         | 1                 |
+
 
 ### 4. How many of each type of pizza was delivered?
 ```sql
@@ -116,7 +151,10 @@ WHERE c.order_id IN (
 )
 GROUP BY p.pizza_name;
 ```
-![Screen Shot 2025-06-05 at 17 31 34](https://github.com/user-attachments/assets/3142a185-b762-436a-b51b-33e0bd79abe3)
+| pizza_name | deliver_count |
+|------------|----------------|
+| Meatlovers | 9              |
+| Vegetarian | 3              |
 
 ### 5. How many Vegetarian and Meatlovers were ordered by each customer?
 ```sql
@@ -126,7 +164,13 @@ SELECT customer_id,
 FROM customer_orders_temp
 GROUP BY customer_id;
 ```
-![Screen Shot 2025-06-05 at 17 31 47](https://github.com/user-attachments/assets/f173ef99-9216-46bb-8417-3ac7b4b30a96)
+| customer_id | Meatlovers | Vegetarian |
+|-------------|------------|------------|
+| 101         | 2          | 1          |
+| 102         | 2          | 1          |
+| 103         | 3          | 1          |
+| 104         | 3          | 0          |
+| 105         | 0          | 1          |
 
 ### 6. What was the maximum number of pizzas delivered in a single order?
 ```sql
@@ -139,7 +183,9 @@ GROUP BY c.order_id
 ORDER BY total_pizzas DESC
 LIMIT 1;
 ```
-![Screen Shot 2025-06-05 at 17 32 03](https://github.com/user-attachments/assets/8ea54031-fea9-4790-aebb-16fa03ff6a88)
+| order_id | total_pizzas |
+|----------|--------------|
+| 4        | 3            |
 
 ### 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
 ```sql
@@ -151,7 +197,13 @@ JOIN customer_orders_temp USING (order_id)
 WHERE cancellation IS NULL
 GROUP BY customer_id;
 ```
-![Screen Shot 2025-06-05 at 17 32 19](https://github.com/user-attachments/assets/e5f8dec2-a08e-4c64-9e9c-6f00baa9eaa7)
+| customer_id | has_change | no_change |
+|-------------|------------|-----------|
+| 101         | 0          | 2         |
+| 102         | 0          | 3         |
+| 103         | 3          | 0         |
+| 104         | 2          | 1         |
+| 105         | 1          | 0         |
 
 ### 8. How many pizzas were delivered that had both exclusions and extras?
 ```sql
@@ -164,8 +216,9 @@ FROM runner_orders_temp
 JOIN customer_orders_temp USING (order_id)
 WHERE cancellation IS NULL;
 ```
-![Screen Shot 2025-06-05 at 17 32 32](https://github.com/user-attachments/assets/34debc14-6d2b-423a-ade3-8f3120804b74)
-
+| change_both |
+|-------------|
+| 1           |
 
 ### 9. What was the total volume of pizzas ordered for each hour of the day?
 ```sql
@@ -175,7 +228,14 @@ FROM customer_orders_temp
 GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
-![Screen Shot 2025-06-05 at 17 32 49](https://github.com/user-attachments/assets/eade65f9-6b25-4dde-80e5-90a41e576546)
+| hour_of_day | pizza_volume |
+|-------------|--------------|
+| 11          | 1            |
+| 13          | 3            |
+| 18          | 3            |
+| 19          | 1            |
+| 21          | 3            |
+| 23          | 3            |
 
 ### 10. What was the volume of orders for each day of the week?
 ```sql
@@ -184,4 +244,10 @@ SELECT DAYNAME(order_time) AS day_of_week,
 FROM customer_orders_temp
 GROUP BY day_of_week;
 ```
-![Screen Shot 2025-06-05 at 17 33 02](https://github.com/user-attachments/assets/ab3ea98a-fad7-4c8f-acce-5a26cd8a286a)
+| day_of_week | orders_volume |
+|-------------|----------------|
+| Friday      | 1              |
+| Saturday    | 2              |
+| Thursday    | 2              |
+| Wednesday   | 5              |
+
