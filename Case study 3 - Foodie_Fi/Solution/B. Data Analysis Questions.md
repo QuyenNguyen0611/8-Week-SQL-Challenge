@@ -277,8 +277,8 @@ ORDER BY avg_days_to_upgrade;
 | 330 – 360 days  | 1                   |
 
 ### Question 11: How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
-- Self-join `subscriptions` to itself to compare two different plans belonging to the same customer.
-- Confirms the Basic Monthly plan started after the Pro Monthly plan (so it's a real downgrade, not just another plan entry).
+- Performs a self-join on the `subscriptions` table to compare multiple plans for the same customer.
+- Ensures the Basic Monthly plan began after the Pro Monthly plan, confirming it was a true downgrade in subscription level.
 
 ```sql
 SELECT
