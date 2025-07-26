@@ -117,3 +117,184 @@ ORDER BY next_plan_id;
 | 2       | 325                 | 32.5       |
 | 3       | 37                  | 3.7        |
 | 4       | 92                  | 9.2        |
+
+### Question 7: What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
+- Joins the `subscriptions` and `plans` tables to get the `plan_name` for each subscription.
+- Filters to include only subscriptions with a `start_date` on or before Dec 31, 2020.
+- Uses the `LEAD()` window function to find each customer's next subscription date (if any), based on chronological order.
+```sql
+SELECT 
+s.plan_id,
+p.plan_name,
+s.customer_id, 
+LEAD (s.start_date) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS next_date
+FROM plans p 
+JOIN subscriptions s 
+ON p.plan_id = s.plan_id
+WHERE s.start_date <= '2020-12-31';
+```
+
+| plan_id | plan_name      | customer_id | next_date   |
+|---------|----------------|-------------|-------------|
+| 0       | Trial          | 1           | 2020-08-08  |
+| 1       | Basic Monthly  | 1           | NULL        |
+| 0       | Trial          | 2           | 2020-09-27  |
+| 3       | Pro Annual     | 2           | NULL        |
+| 0       | Trial          | 3           | 2020-01-20  |
+| 1       | Basic Monthly  | 3           | NULL        |
+| 0       | Trial          | 4           | 2020-01-24  |
+|...      |...             | ...         |...          |
+
+- Identify customers whose last recorded plan before 2021 had no subsequent plan.
+- Counts these customers per plan and computes what percentage of all customers had that plan as their last plan before 2021.
+ 
+```sql
+WITH next_dates AS (
+SELECT 
+s.plan_id,
+p.plan_name,
+s.customer_id, 
+LEAD (s.start_date) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) AS next_date
+FROM plans p 
+JOIN subscriptions s 
+ON p.plan_id = s.plan_id
+WHERE s.start_date <= '2020-12-31')
+
+SELECT 
+plan_id,
+plan_name,
+COUNT(DISTINCT CASE WHEN next_date IS NULL THEN customer_id END) AS customer_count,
+ROUND(COUNT(DISTINCT CASE WHEN next_date IS NULL THEN customer_id END)*100/ 
+(SELECT COUNT(DISTINCT customer_id) FROM subscriptions),1) AS percentage
+FROM next_dates
+GROUP BY plan_id, plan_name
+ORDER BY plan_id;
+```
+
+| Plan ID | Plan Name      | Customer Count | Percentage |
+|---------|----------------|----------------|------------|
+| 0       | Trial          | 19             | 1.9        |
+| 1       | Basic Monthly  | 224            | 22.4       |
+| 2       | Pro Monthly    | 326            | 32.6       |
+| 3       | Pro Annual     | 195            | 19.5       |
+| 4       | Churn          | 236            | 23.6       |
+
+### Question 8: How many customers have upgraded to an annual plan in 2020?
+
+```sql
+SELECT COUNT(DISTINCT customer_id) AS number_of_customers
+FROM subscriptions
+WHERE plan_id = 3
+AND YEAR(start_date) = 2020;
+```
+
+|number_of_customers|
+|-------------------|
+|195                |
+
+### Question 9: How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
+
+```sql
+WITH trial_plan AS (
+-- Filter results to include only the customers subscribed to the trial plan
+SELECT
+customer_id, 
+start_date AS trial_date
+FROM subscriptions
+WHERE plan_id = 0)
+, 
+annual_plan AS (
+-- Filter results to include only the customers subscribed to the pro annual plan
+SELECT 
+customer_id, 
+start_date AS annual_date
+FROM subscriptions
+WHERE plan_id = 3)
+
+SELECT
+ROUND(AVG(DATEDIFF(annual_date, trial_date)),0) AS days_to_upgrade
+FROM trial_plan t
+JOIN annual_plan a 
+ON t.customer_id = a.customer_id;
+```
+|days_to_upgrade|
+|---------------|
+|105            |
+
+### Question 10: Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
+- Computes the number of days between when the customer started the trial and when they subscribed to the annual plan.
+- Divides the day difference by 30 to convert to months.
+- Uses `FLOOR()` to round down (e.g., 59 days → 1 month).
+- Adds +1 so that even upgrades within the first month fall into bin 1.
+  
+```sql
+WITH trial_plan AS (
+-- Filter results to include only the customers subscribed to the trial plan
+SELECT
+customer_id, 
+start_date AS trial_date
+FROM subscriptions
+WHERE plan_id = 0),
+ 
+annual_plan AS (
+-- Filter results to include only the customers subscribed to the tpro annual plan
+SELECT
+customer_id, 
+start_date AS annual_date
+FROM subscriptions
+WHERE plan_id = 3)
+, 
+
+bins AS (
+SELECT 
+FLOOR(DATEDIFF(annual.annual_date, trial.trial_date) / 30) + 1 AS avg_days_to_upgrade
+FROM trial_plan AS trial
+JOIN annual_plan AS annual
+ON trial.customer_id = annual.customer_id
+)
+
+SELECT
+CONCAT((avg_days_to_upgrade - 1) * 30, ' - ', avg_days_to_upgrade * 30, ' days') AS bucket,
+COUNT(*) as num_of_customers
+FROM bins
+GROUP BY avg_days_to_upgrade
+ORDER BY avg_days_to_upgrade;
+```
+
+| bucket          | num_of_customers    |
+|-----------------|---------------------|
+| 0 – 30 days     | 48                  |
+| 30 – 60 days    | 25                  |
+| 60 – 90 days    | 33                  |
+| 90 – 120 days   | 35                  |
+| 120 – 150 days  | 43                  |
+| 150 – 180 days  | 35                  |
+| 180 – 210 days  | 27                  |
+| 210 – 240 days  | 4                   |
+| 240 – 270 days  | 5                   |
+| 270 – 300 days  | 1                   |
+| 300 – 330 days  | 1                   |
+| 330 – 360 days  | 1                   |
+
+### Question 11: How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
+- Self-join `subscriptions` to itself to compare two different plans belonging to the same customer.
+- Confirms the Basic Monthly plan started after the Pro Monthly plan (so it's a real downgrade, not just another plan entry).
+
+```sql
+SELECT
+COUNT(DISTINCT p.customer_id) AS customers_downgraded
+FROM subscriptions p
+JOIN subscriptions b
+ON p.customer_id = b.customer_id
+WHERE p.plan_id = 2  
+AND b.plan_id = 1  
+AND YEAR(p.start_date) = 2020
+AND YEAR(b.start_date) = 2020
+AND b.start_date > p.start_date;
+```
+
+|customers_downgraded|
+|--------------------|
+|0                   |
+
+
