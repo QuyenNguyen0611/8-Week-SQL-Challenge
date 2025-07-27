@@ -55,7 +55,7 @@ Danny finds a few smart friends to launch his new startup Foodie-Fi in 2020 and 
 Danny created Foodie-Fi with a data driven mindset and wanted to ensure all future investment decisions and new features were decided using data. This case study focuses on using subscription style digital data to answer important business questions.
 
 🔗 [View the case study](https://8weeksqlchallenge.com/case-study-3/)  
-📂 [My solution](#)
+📂 [My solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%203%20-%20Foodie_Fi)
 
 ---
 
