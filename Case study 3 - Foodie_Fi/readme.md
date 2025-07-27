@@ -51,6 +51,7 @@ Create a payments_2020 table that reflects actual billing behavior:
 
 ## 🚀 My Solution
 [📜 View complete SQL scripts](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%203%20-%20Foodie_Fi/Syntax)
+
 [📊 View results](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%203%20-%20Foodie_Fi/Solution)
 
 
