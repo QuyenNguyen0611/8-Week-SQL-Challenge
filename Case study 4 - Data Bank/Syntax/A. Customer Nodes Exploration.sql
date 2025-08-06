@@ -37,18 +37,36 @@ DATEDIFF(end_date, start_date) AS reallocation_days
 FROM customer_nodes
 WHERE end_date != '9999-12-31'
 ),
+
 ranked AS (
 SELECT 
 region_id,
 reallocation_days,
-NTILE(100) OVER (PARTITION BY region_id ORDER BY reallocation_days) AS percentile_rank
+RANK() OVER (PARTITION BY region_id ORDER BY reallocation_days) AS rnk,
+COUNT(*) OVER (PARTITION BY region_id) AS total_rows
 FROM node_days
-)
+),
+
+with_percentile AS (
 SELECT 
 region_id,
-MAX(CASE WHEN percentile_rank = 50 THEN reallocation_days END) AS median_days,
-MAX(CASE WHEN percentile_rank = 80 THEN reallocation_days END) AS p80_days,
-MAX(CASE WHEN percentile_rank = 95 THEN reallocation_days END) AS p95_days
+reallocation_days,
+rnk,
+total_rows,
+(rnk - 1) / (total_rows - 1) AS approx_percentile
 FROM ranked
+WHERE total_rows > 1
+),
+
+selected AS (
+SELECT 
+region_id,
+MIN(CASE WHEN approx_percentile >= 0.5 THEN reallocation_days END) AS median_days,
+MIN(CASE WHEN approx_percentile >= 0.8 THEN reallocation_days END) AS p80_days,
+MIN(CASE WHEN approx_percentile >= 0.95 THEN reallocation_days END) AS p95_days
+FROM with_percentile
 GROUP BY region_id
+)
+
+SELECT * FROM selected
 ORDER BY region_id;
