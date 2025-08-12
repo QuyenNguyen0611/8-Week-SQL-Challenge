@@ -2,10 +2,10 @@
 
 ## 📕 Table of Contents  
 - 🔐 [Entity Relationship Diagram](#-entity-relationship-diagram)  
-- ❓ [Case Study Questions](#-Case-Study-Questions)
-  - [A. Customer Nodes Exploration](#-a-Customer-Nodes-Exploration)
-  - [B. Customer Transactions](#-b-Customer-Transactions) 
-- [🚀 My Solution](#-My-Solution)
+- ❓ [Case Study Questions](#-case-study-questions)
+  - [A. Customer Nodes Exploration](#-a-customer-nodes-exploration)
+  - [B. Customer Transactions](#-b-customer-transactions) 
+- [🚀 My Solution](#-my-solution)
 
 ---
 
