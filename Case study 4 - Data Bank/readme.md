@@ -1,14 +1,11 @@
-## 🏦 Case Study #4: Data Bank  
+# 🏦 Case Study #4: Data Bank  
 
-📕 **Table of Contents**  
-🔐 [Entity Relationship Diagram](#-entity-relationship-diagram)  
-❓ [Case Study Questions](#-Case-Study-Questions)
-
-[A. Customer Nodes Exploration](#-A-Customer-Nodes-Exploration)
-
-[B. Customer Transactions](#-B-Customer-Transactions) 
-
-[🚀 My Solution](#-My_Solution)
+## 📕 Table of Contents  
+- 🔐 [Entity Relationship Diagram](#-entity-relationship-diagram)  
+- ❓ [Case Study Questions](#-Case-Study-Questions)
+  - [A. Customer Nodes Exploration](#-a-Customer-Nodes-Exploration)
+  - [B. Customer Transactions](#-b-Customer-Transactions) 
+- [🚀 My Solution](#-My-Solution)
 
 ---
 
