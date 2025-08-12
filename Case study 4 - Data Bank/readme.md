@@ -3,8 +3,8 @@
 ## 📕 Table of Contents  
 - 🔐 [Entity Relationship Diagram](#-entity-relationship-diagram)  
 - ❓ [Case Study Questions](#-case-study-questions)
-  - [A. Customer Nodes Exploration](#-a-customer-nodes-exploration)
-  - [B. Customer Transactions](#-b-customer-transactions) 
+  - [A. Customer Nodes Exploration](#a-customer-nodes-exploration)
+  - [B. Customer Transactions](#b-customer-transactions) 
 - [🚀 My Solution](#-my-solution)
 
 ---
