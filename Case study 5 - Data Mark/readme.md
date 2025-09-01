@@ -6,7 +6,7 @@
   - [1. Data Cleansing](#1-data-cleansing)
   - [2. Data Exporation](#2-data-exploration)
   - [3. Before and After Analysis](#3-before-and-after-analysis)
-  - [4, Bonus Question](#4-bonus-question)
+  - [4. Bonus Question](#4-bonus-question)
 - [🚀 My Solution](#-my-solution)
 
 ---
