@@ -5,7 +5,7 @@
 - ❓ [Case Study Questions](#-case-study-questions)
   - [1. Data Cleansing](#1-data-cleansing)
   - [2. Data Exporation](#2-data-exploration)
-  - [3. Before and After Analysis](#3-before-after-analysis) 
+  - [3. Before and After Analysis](#3-before-and-after-analysis) 
 - [🚀 My Solution](#-my-solution)
 
 ---
