@@ -87,6 +87,20 @@ Using this analysis approach - answer the following questions:
 - What about the entire 12 weeks before and after?
 - How do the sale metrics for these 2 periods before and after compare with the previous years in 2018 and 2019?
 
+---
+
+### 4. Bonus Question
+📄 [View my solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/blob/main/Case%20study%205%20-%20Data%20Mark/Solutions/4.%20Bonus%20Question.md)
+
+Which areas of the business have the highest negative impact in sales metrics performance in 2020 for the 12 week before and after period?
+
+- `region`
+- `platform`
+- `age_band`
+- `demographic`
+
+Do you have any further recommendations for Danny’s team at Data Mart or any interesting insights based off this analysis?
+
 ## 🚀 My Solution  
 📜 [View complete SQL scripts](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%205%20-%20Data%20Mark/Syntax)
 
