@@ -19,8 +19,8 @@ FROM cookie_count;
 
 # 3. What is the unique number of visits by all users per month?
 SELECT 
-month(event_time),
-count(distinct visit_id)
+month(event_time) AS month,
+count(distinct visit_id) AS total_visits
 FROM events 
 GROUP BY month(event_time)
 ORDER BY month(event_time);
@@ -82,15 +82,42 @@ GROUP BY p.product_category
 ORDER BY page_views DESC;
 
 # 9. What are the top 3 products by purchases?
-SELECT
-  p.page_name AS product,
-  COUNT(*) AS purchases
-FROM events e
-JOIN page_hierarchy p
-  ON p.page_id = e.page_id
-WHERE e.event_type = 3    -- Purchase   
-GROUP BY p.page_name
-ORDER BY purchases DESC
+WITH cart_add AS (
+  SELECT 
+    e.visit_id,
+    ph.product_id,
+    ph.page_name AS product_name,
+    ph.product_category
+  FROM events AS e
+  JOIN page_hierarchy AS ph
+    ON e.page_id = ph.page_id
+  WHERE ph.product_id IS NOT NULL
+    AND e.event_type = 2 -- Add to Cart
+),
+
+purchase_visits AS (
+  SELECT DISTINCT e.visit_id
+  FROM events e
+  WHERE e.event_type = 3   -- Purchase
+),
+
+purchased_products AS (
+  SELECT 
+    c.product_id,
+    c.product_name,
+    c.product_category,
+    COUNT(*) AS purchase_count
+  FROM cart_add c
+  JOIN purchase_visits p
+    ON c.visit_id = p.visit_id
+  GROUP BY c.product_id, c.product_name, c.product_category
+)
+
+SELECT 
+  product_name,
+  purchase_count
+FROM purchased_products
+ORDER BY purchase_count DESC
 LIMIT 3;
 
 
