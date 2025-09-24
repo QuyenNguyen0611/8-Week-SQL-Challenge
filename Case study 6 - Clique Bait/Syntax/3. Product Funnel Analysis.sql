@@ -32,7 +32,7 @@ WITH CTE1 AS(
 purchase_event AS(
   SELECT 
     DISTINCT visit_id
-  FROM clique_bait.events
+  FROM events
   WHERE event_type = 3),
 
 combined_table AS(
@@ -46,9 +46,10 @@ cart_add,
 CASE WHEN p.visit_id IS NOT NULL THEN 1 ELSE 0 END AS purchased
 FROM CTE1 c
 LEFT JOIN purchase_event p
-ON c.visit_id = p.visit_id)
+ON c.visit_id = p.visit_id),
 
-/*SELECT 
+product_info AS(
+SELECT 
 product_name, 
 product_category, 
 SUM(page_view) AS views,
@@ -56,8 +57,46 @@ SUM(cart_add) AS cart_added,
 SUM(CASE WHEN cart_add = 1 AND purchased = 0 THEN 1 ELSE 0 END) AS abandoned,
 SUM(CASE WHEN cart_add = 1 AND purchased = 1 THEN 1 ELSE 0 END) AS purchased
 FROM combined_table
-GROUP BY product_name, product_category;*/
+GROUP BY product_name, product_category)
 
+SELECT 
+*
+FROM product_info;
+
+WITH CTE1 AS(
+SELECT 
+    e.visit_id,
+    ph.product_id,
+    ph.page_name AS product_name,
+    ph.product_category,
+    SUM(CASE WHEN e.event_type = 1 THEN 1 ELSE 0 END) AS page_view, -- 1 for Page View
+    SUM(CASE WHEN e.event_type = 2 THEN 1 ELSE 0 END) AS cart_add -- 2 for Add Cart
+FROM events AS e
+JOIN page_hierarchy AS ph
+ON e.page_id = ph.page_id
+WHERE ph.product_id IS NOT NULL
+GROUP BY e.visit_id, ph.product_id, ph.page_name, ph.product_category), 
+
+purchase_event AS(
+SELECT 
+DISTINCT visit_id
+FROM events
+WHERE event_type = 3),
+
+combined_table AS(
+SELECT 
+c.visit_id, 
+product_id, 
+product_name, 
+product_category, 
+page_view, 
+cart_add,
+CASE WHEN p.visit_id IS NOT NULL THEN 1 ELSE 0 END AS purchased
+FROM CTE1 c
+LEFT JOIN purchase_event p
+ON c.visit_id = p.visit_id),
+
+product_category_info AS (
 SELECT 
 product_category, 
 SUM(page_view) AS views,
@@ -65,4 +104,9 @@ SUM(cart_add) AS cart_added,
 SUM(CASE WHEN cart_add = 1 AND purchased = 0 THEN 1 ELSE 0 END) AS abandoned,
 SUM(CASE WHEN cart_add = 1 AND purchased = 1 THEN 1 ELSE 0 END) AS purchased
 FROM combined_table
-GROUP BY product_category;
+GROUP BY product_category)
+
+SELECT 
+*
+FROM product_category_info;
+
