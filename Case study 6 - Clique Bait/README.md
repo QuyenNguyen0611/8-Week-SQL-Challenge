@@ -78,7 +78,7 @@ Using the DDL schema details to create an ERD for all the Clique Bait datasets.
 | 13      | Confirmation  | NULL             | NULL       |
 
 
-### Case Study Questions
+### ❓ Case Study Questions
 
 ### 1. Digital Analysis
 
