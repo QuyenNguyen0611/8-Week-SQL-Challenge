@@ -139,7 +139,12 @@ Some ideas you might want to investigate further include:
 - Identifying users who have received impressions during each campaign period and comparing each metric with other users who did not have an impression event
 - Does clicking on an impression lead to higher purchase rates?
 - What is the uplift in purchase rate when comparing users who click on a campaign impression versus users who do not receive an impression? What if we compare them with users who just an impression but do not click?
-- What metrics can you use to quantify the success or failure of each campaign compared to eachother?
+- What metrics can you use to quantify the success or failure of each campaign compared to each other?
+
+## 🚀 My Solution  
+📜 [View complete SQL scripts](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%206%20-%20Clique%20Bait/Syntax)
+
+📊 [View results](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%206%20-%20Clique%20Bait/Solution)
 
 
 
