@@ -28,7 +28,7 @@ There are some additional details to provide context:
 
 ---
 
-## ❓ Case Study Questions  
+### ❓ Case Study Questions  
 
 ### 1. Data Cleansing  
 📄 [View my solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/blob/main/Case%20study%205%20-%20Data%20Mark/Solutions/1.%20Data%20Cleansing.md)
