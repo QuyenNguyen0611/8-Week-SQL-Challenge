@@ -75,7 +75,7 @@ The management team at Data Bank want to increase their total customer base - bu
 This case study is all about calculating metrics, growth and helping the business analyse their data in a smart way to better forecast and plan for their future developments!
 
 🔗 [View the case study](https://8weeksqlchallenge.com/case-study-4/)  
-📂 [My solution](#)
+📂 [My solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%204%20-%20Data%20Bank)
 
 ---
 
@@ -94,7 +94,7 @@ The key business question he wants you to help him answer are the following:
 - What can we do about future introduction of similar sustainability updates to the business to minimise impact on sales?
 
 🔗 [View the case study](https://8weeksqlchallenge.com/case-study-5/)  
-📂 [My solution](#)
+📂 [My solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%205%20-%20Data%20Mark)
 
 ---
 
@@ -105,7 +105,7 @@ Clique Bait is not like your regular online seafood store - the founder and CEO 
 In this case study - you are required to support Danny’s vision and analyse his dataset and come up with creative solutions to calculate funnel fallout rates for the Clique Bait online store.
 
 🔗 [View the case study](https://8weeksqlchallenge.com/case-study-6/)  
-📂 [My solution](#)
+📂 [My solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%206%20-%20Clique%20Bait)
 
 ---
 
@@ -116,7 +116,7 @@ Balanced Tree Clothing Company prides themselves on providing an optimised range
 Danny, the CEO of this trendy fashion company has asked you to assist the team’s merchandising teams analyse their sales performance and generate a basic financial report to share with the wider business.
 
 🔗 [View the case study](https://8weeksqlchallenge.com/case-study-7/)  
-📂 [My solution](#)
+📂 [My solution](https://github.com/QuyenNguyen0611/8-Week-SQL-Challenge/tree/main/Case%20study%207%20-%20Balanced%20Tree%20Clothing%20Co.)
 
 ---
 
